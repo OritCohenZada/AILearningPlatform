@@ -1,20 +1,24 @@
 from fastapi import FastAPI
-from sqlalchemy import text
-from app.database import engine
+from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
+from app.routers import users, categories, prompts
 
 app = FastAPI(title=settings.PROJECT_NAME)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+app.include_router(users.router)
+app.include_router(categories.router)
+app.include_router(prompts.router)
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to AI Learning Platform API"}
-
-@app.get("/health")
-def health_check():
-   
-    try:
-        with engine.connect() as connection:
-            connection.execute(text("SELECT 1"))
-        return {"status": "ok", "database": "connected"}
-    except Exception as e:
-        return {"status": "error", "database": str(e)}
