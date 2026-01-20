@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Category, SubCategory } from '../models/category.model';
@@ -15,13 +15,14 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  
+ 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}/users`);
   }
 
-  createUser(name: string): Observable<User> {
-    return this.http.post<User>(`${this.baseUrl}/users`, { name });
+  createUser(name: string, phone: string): Observable<User> {
+
+    return this.http.post<User>(`${this.baseUrl}/users`, { name, phone });
   }
 
  
@@ -29,25 +30,15 @@ export class ApiService {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`);
   }
 
-
-  getSubCategories(): Observable<SubCategory[]> {
-    return this.http.get<SubCategory[]>(`${this.baseUrl}/sub_categories`);
+  getSubCategories(categoryId: number): Observable<SubCategory[]> {
+    return this.http.get<SubCategory[]>(`${this.baseUrl}/categories/${categoryId}/sub-categories`);
   }
 
-
-  
   createPrompt(request: CreatePromptRequest): Observable<Prompt> {
-    return this.http.post<Prompt>(`${this.baseUrl}/prompts`, request);
+    return this.http.post<Prompt>(`${this.baseUrl}/prompts/`, request);
   }
 
-
-  getPromptsHistory(userId?: number): Observable<Prompt[]> {
-    let params = new HttpParams();
-    if (userId) {
-      params = params.set('user_id', userId);
-    }
-    
-  
-    return this.http.get<Prompt[]>(`${this.baseUrl}/prompts`, { params });
+  getUserHistory(userId: number): Observable<Prompt[]> {
+    return this.http.get<Prompt[]>(`${this.baseUrl}/prompts/user/${userId}`);
   }
 }
