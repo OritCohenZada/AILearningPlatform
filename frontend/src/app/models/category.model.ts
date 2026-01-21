@@ -6,5 +6,5 @@ export interface SubCategory {
 export interface Category {
   id: number;
   name: string;
-  subCategories: SubCategory[];
+  sub_categories: SubCategory[];
 }

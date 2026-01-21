@@ -15,7 +15,6 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
- 
   getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.baseUrl}/users`);
   }
@@ -23,7 +22,6 @@ export class ApiService {
   createUser(name: string, phone: string): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/users`, { name, phone });
   }
-
 
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`);
@@ -41,7 +39,6 @@ export class ApiService {
     return this.http.post<SubCategory>(`${this.baseUrl}/categories/${categoryId}/sub-categories`, { name });
   }
 
-  
   createPrompt(request: CreatePromptRequest): Observable<Prompt> {
     return this.http.post<Prompt>(`${this.baseUrl}/prompts/`, request);
   }
@@ -50,8 +47,28 @@ export class ApiService {
     return this.http.get<Prompt[]>(`${this.baseUrl}/prompts/user/${userId}`);
   }
 
-
   login(name: string, phone: string): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}/users/login`, { name, phone });
+  }
+
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/users/${id}`);
+  }
+
+  updateUser(id: number, name: string, phone: string): Observable<User> {
+    return this.http.put<User>(`${this.baseUrl}/users/${id}`, { name, phone });
+  }
+
+  // --- תוספות חדשות ---
+  deleteCategory(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/categories/${id}`);
+  }
+
+  updateCategory(id: number, name: string): Observable<Category> {
+    return this.http.put<Category>(`${this.baseUrl}/categories/${id}`, { name });
+  }
+
+  deleteSubCategory(subId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/categories/sub-categories/${subId}`);
   }
 }

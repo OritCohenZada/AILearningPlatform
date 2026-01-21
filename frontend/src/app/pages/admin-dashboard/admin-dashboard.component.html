@@ -1,8 +1,11 @@
-<div class="h-[85vh] flex flex-col p-6">
+<div class="min-h-screen flex flex-col p-6 relative">
+
+  <div class="absolute top-6 left-6 z-10">
+    <button (click)="logout()" class="text-gray-500 hover:text-white text-sm">יציאה 🚪</button>
+  </div>
 
   <div class="flex justify-center mb-8">
     <div class="bg-neutral-900 p-1.5 rounded-xl border border-gray-700 flex shadow-lg">
-      
       <button (click)="activeTab = 'users'" 
               [class.bg-amber-500]="activeTab === 'users'"
               [class.text-black]="activeTab === 'users'"
@@ -16,21 +19,18 @@
               class="px-8 py-3 rounded-lg font-bold transition-all duration-300 text-gray-400 hover:text-white flex items-center gap-2">
         <span>📚</span> ניהול תוכן
       </button>
-
     </div>
   </div>
 
-
-  <div *ngIf="activeTab === 'users'" class="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-1 overflow-hidden animate-fade-in">
-    
+  <div *ngIf="activeTab === 'users'" class="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-1 animate-fade-in h-[600px]">
     <div class="lg:col-span-1 bg-neutral-900 rounded-xl border border-amber-500/30 shadow-2xl overflow-hidden flex flex-col">
-      <div class="p-4 border-b border-gray-800 bg-neutral-800/50 flex justify-between items-center">
+       <div class="p-4 border-b border-gray-800 bg-neutral-800/50 flex justify-between items-center">
         <h2 class="text-xl font-bold text-amber-500">רשימת משתמשים</h2>
         <span class="bg-gray-800 text-gray-400 text-xs px-2 py-1 rounded-full">{{ users.length }}</span>
       </div>
       <div class="overflow-y-auto flex-1 p-2 space-y-2 custom-scrollbar">
         <div *ngFor="let user of users" (click)="selectUser(user)"
-             class="p-4 rounded-lg cursor-pointer transition flex justify-between items-center group"
+             class="p-4 rounded-lg cursor-pointer transition flex justify-between items-center group relative pr-4"
              [class.bg-amber-600]="selectedUser?.id === user.id"
              [class.text-black]="selectedUser?.id === user.id"
              [class.hover:bg-neutral-800]="selectedUser?.id !== user.id">
@@ -38,41 +38,48 @@
             <div class="font-bold">{{ user.name }}</div>
             <div class="text-xs opacity-70 group-hover:text-white">{{ user.phone }}</div>
           </div>
-          <div class="text-xs opacity-50">ID: {{ user.id }}</div>
+          <div class="flex items-center gap-2">
+             <div class="text-xs opacity-50">ID: {{ user.id }}</div>
+             <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity" 
+                  [class.text-white]="selectedUser?.id !== user.id"
+                  [class.text-black]="selectedUser?.id === user.id">
+                <button (click)="openEditUserModal(user, $event)" class="p-1 hover:bg-white/20 rounded">✏️</button>
+                <button (click)="deleteUser(user, $event)" class="p-1 hover:bg-red-500/20 rounded hover:text-red-600">🗑️</button>
+             </div>
+          </div>
         </div>
+      </div>
+      <div class="p-3 border-t border-gray-800 bg-black/20">
+        <button (click)="openAddUserModal()" class="w-full py-2 border border-dashed border-gray-600 rounded-lg text-gray-400 hover:text-amber-500 hover:border-amber-500 transition text-sm">
+          + הוסף משתמש חדש
+        </button>
       </div>
     </div>
 
     <div class="lg:col-span-2 bg-neutral-900 rounded-xl border border-gray-800 shadow-2xl p-6 overflow-hidden flex flex-col">
-      
-      <div *ngIf="!selectedUser" class="flex-1 flex flex-col items-center justify-center text-gray-500 text-center opacity-50">
+       <div *ngIf="!selectedUser" class="flex-1 flex flex-col items-center justify-center text-gray-500 text-center opacity-50">
         <div class="text-6xl mb-4">👈</div>
         <div class="text-xl">בחר משתמש מהרשימה<br>כדי לצפות בהיסטוריית הלמידה שלו</div>
       </div>
-
       <div *ngIf="selectedUser" class="flex flex-col h-full animate-fade-in">
         <div class="flex justify-between items-end border-b border-gray-700 pb-4 mb-4">
           <h2 class="text-2xl font-bold text-white">
-             תיק אישי: <span class="text-amber-500">{{ selectedUser.name }}</span>
+              תיק אישי: <span class="text-amber-500">{{ selectedUser.name }}</span>
           </h2>
           <div *ngIf="isLoadingUsers" class="text-amber-500 text-sm animate-pulse">טוען נתונים... ⏳</div>
         </div>
-
         <div class="overflow-y-auto flex-1 space-y-4 custom-scrollbar pr-2">
-          
           <div *ngIf="userHistory.length === 0 && !isLoadingUsers" class="text-center py-10 border-2 border-dashed border-gray-800 rounded-xl text-gray-500">
             המשתמש הזה עדיין לא ביצע למידה במערכת.
           </div>
-
           <div *ngFor="let item of userHistory" class="bg-neutral-800 p-5 rounded-xl border border-gray-700 hover:border-amber-500/30 transition shadow-lg">
              <div class="flex items-start gap-3 mb-3">
                <span class="text-2xl">❓</span>
                <div>
                  <p class="text-amber-500 font-bold text-sm">השאלה שנשאלה:</p>
-                 <p class="text-white font-medium">{{ item.prompt }}</p>
+                 <p class="text-white font-medium">{{ item.prompt }}</p> 
                </div>
              </div>
-             
              <div class="bg-black/30 p-4 rounded-lg border border-gray-700/50">
                <div class="flex items-start gap-3">
                  <span class="text-2xl">💡</span>
@@ -82,7 +89,6 @@
                  </div>
                </div>
              </div>
-             
              <div class="mt-2 text-right text-xs text-gray-600">
                {{ item.created_at | date:'dd/MM/yyyy HH:mm' }}
              </div>
@@ -93,56 +99,93 @@
   </div>
 
 
-  <div *ngIf="activeTab === 'content'" class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in max-w-6xl mx-auto w-full">
+  <div *ngIf="activeTab === 'content'" class="max-w-4xl mx-auto w-full animate-fade-in flex flex-col pb-20">
 
-    <div class="bg-neutral-900 p-8 rounded-xl border border-amber-500/30 shadow-2xl relative overflow-hidden group hover:border-amber-500/60 transition">
-      <div class="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
-      <h2 class="text-2xl font-bold text-amber-500 mb-6 flex items-center gap-3">
-        <span>📂</span> הוספת נושא ראשי
-      </h2>
-      
-      <form [formGroup]="categoryForm" (ngSubmit)="addCategory()" class="space-y-6">
-        <div>
-          <label class="block text-gray-400 text-sm mb-2 font-bold">שם הנושא החדש</label>
-          <input formControlName="name" type="text" placeholder="למשל: סייבר, בישול, היסטוריה..."
-                 class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:border-amber-500 outline-none transition focus:ring-1 focus:ring-amber-500">
-        </div>
-        <button type="submit" [disabled]="categoryForm.invalid"
-                class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 rounded-lg transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
-          ➕ צור קטגוריה
-        </button>
-      </form>
+    <div class="bg-neutral-900 p-6 rounded-xl border border-gray-800 shadow-lg mb-6 flex justify-between items-center sticky top-0 z-20 backdrop-blur-md bg-opacity-90">
+      <h2 class="text-2xl font-bold text-amber-500">ניהול קטגוריות</h2>
+      <button (click)="openAddCategoryModal()" 
+              class="bg-amber-600 hover:bg-amber-500 text-black font-bold py-2 px-6 rounded-lg transition flex items-center gap-2">
+        <span>➕</span> נושא חדש
+      </button>
     </div>
 
-    <div class="bg-neutral-900 p-8 rounded-xl border border-green-500/30 shadow-2xl relative overflow-hidden group hover:border-green-500/60 transition">
-      <div class="absolute top-0 left-0 w-2 h-full bg-green-500"></div>
-      <h2 class="text-2xl font-bold text-green-500 mb-6 flex items-center gap-3">
-        <span>📑</span> הוספת תת-נושא
-      </h2>
+    <div class="space-y-6">
       
-      <form [formGroup]="subCategoryForm" (ngSubmit)="addSubCategory()" class="space-y-6">
-        <div>
-          <label class="block text-gray-400 text-sm mb-2 font-bold">לאיזה נושא ראשי זה שייך?</label>
-          <select formControlName="parentId" 
-                  class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:border-green-500 outline-none transition h-[58px]">
-            <option value="" disabled selected>בחר מהרשימה...</option>
-            <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
-          </select>
+      <div *ngFor="let category of categories" class="bg-neutral-900 border border-gray-800 rounded-xl overflow-hidden shadow-lg group">
+        
+        <div class="bg-neutral-800/50 p-4 flex justify-between items-center border-b border-gray-800">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">📂</span>
+            <span class="text-xl font-bold text-white">{{ category.name }}</span>
+          </div>
+          
+          <div class="flex items-center gap-2">
+             <button (click)="openAddSubCategoryModal(category.id)" class="text-xs bg-green-600/20 text-green-500 hover:bg-green-600 hover:text-white px-3 py-1.5 rounded-lg transition border border-green-600/30 flex items-center gap-1">
+               <span>+</span> תת-נושא
+             </button>
+             <div class="w-px h-6 bg-gray-700 mx-2"></div>
+             <button (click)="openEditContentModal(category)" class="p-2 hover:bg-white/10 rounded-lg text-gray-400 hover:text-white transition" title="ערוך שם">✏️</button>
+             <button (click)="deleteCategory(category.id)" class="p-2 hover:bg-red-900/30 rounded-lg text-gray-400 hover:text-red-500 transition" title="מחק קטגוריה">🗑️</button>
+          </div>
         </div>
 
-        <div>
-          <label class="block text-gray-400 text-sm mb-2 font-bold">שם התת-נושא</label>
-          <input formControlName="name" type="text" placeholder="למשל: התקפות רשת, אוכל איטלקי..."
-                 class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:border-green-500 outline-none transition focus:ring-1 focus:ring-green-500">
-        </div>
+        <div class="p-2 bg-black/20">
+          <div *ngIf="!category.sub_categories || category.sub_categories.length === 0" class="text-gray-600 text-sm text-center py-4 italic">
+            אין עדיין תתי-נושאים.
+          </div>
 
-        <button type="submit" [disabled]="subCategoryForm.invalid"
-                class="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-black font-bold py-3 rounded-lg transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
-          ➕ הוסף תת-נושא
-        </button>
+          <div *ngFor="let sub of category.sub_categories" 
+               class="flex justify-between items-center p-3 hover:bg-white/5 rounded-lg border-b border-gray-800/50 last:border-0 transition">
+            <div class="flex items-center gap-3 mr-4">
+              <span class="text-gray-500">↳</span>
+              <span class="text-gray-300">{{ sub.name }}</span>
+            </div>
+            <button (click)="deleteSubCategory(sub.id)" class="text-gray-600 hover:text-red-500 p-1 transition" title="מחק תת-נושא">🗑️</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showUserModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+    <div class="bg-neutral-900 border border-amber-500/50 w-full max-w-md rounded-2xl shadow-2xl p-8 relative">
+      <h2 class="text-2xl font-bold text-white mb-6">
+        {{ isEditing ? '✏️ עריכת משתמש' : '✨ הוספת משתמש חדש' }}
+      </h2>
+      <form [formGroup]="userForm" (ngSubmit)="saveUser()" class="space-y-5">
+        <div>
+          <label class="block text-gray-400 text-sm mb-2">שם מלא</label>
+          <input formControlName="name" type="text" class="w-full bg-black border border-gray-700 rounded-lg p-3 text-white focus:border-amber-500 outline-none transition">
+        </div>
+        <div>
+          <label class="block text-gray-400 text-sm mb-2">מספר טלפון</label>
+          <input formControlName="phone" type="text" class="w-full bg-black border border-gray-700 rounded-lg p-3 text-white focus:border-amber-500 outline-none transition">
+        </div>
+        <div class="flex gap-3 pt-4">
+          <button type="button" (click)="closeModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-lg transition">ביטול</button>
+          <button type="submit" [disabled]="userForm.invalid" class="flex-1 bg-amber-600 hover:bg-amber-500 text-white font-bold py-3 rounded-lg transition shadow-lg shadow-amber-500/20">{{ isEditing ? 'שמור' : 'צור' }}</button>
+        </div>
       </form>
     </div>
+  </div>
 
+  <div *ngIf="showCategoryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
+    <div class="bg-neutral-900 border border-green-500/50 w-full max-w-md rounded-2xl shadow-2xl p-8 relative">
+      <h2 class="text-2xl font-bold text-white mb-6">
+        {{ isEditing ? '✏️ עריכת' : '✨ הוספת' }} 
+        <span class="text-green-500">{{ modalType === 'category' ? 'נושא ראשי' : 'תת-נושא' }}</span>
+      </h2>
+      <form [formGroup]="contentForm" (ngSubmit)="saveContent()" class="space-y-6">
+        <div>
+          <label class="block text-gray-400 text-sm mb-2">שם</label>
+          <input formControlName="name" type="text" class="w-full bg-black border border-gray-700 rounded-lg p-3 text-white focus:border-green-500 outline-none transition">
+        </div>
+        <div class="flex gap-3 pt-4">
+          <button type="button" (click)="closeModal()" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-lg transition">ביטול</button>
+          <button type="submit" [disabled]="contentForm.invalid" class="flex-1 bg-green-600 hover:bg-green-500 text-white font-bold py-3 rounded-lg transition shadow-lg shadow-green-500/20">שמור</button>
+        </div>
+      </form>
+    </div>
   </div>
 
 </div>
