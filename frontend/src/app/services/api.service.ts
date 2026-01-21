@@ -21,11 +21,10 @@ export class ApiService {
   }
 
   createUser(name: string, phone: string): Observable<User> {
-
     return this.http.post<User>(`${this.baseUrl}/users`, { name, phone });
   }
 
- 
+
   getCategories(): Observable<Category[]> {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`);
   }
@@ -34,11 +33,25 @@ export class ApiService {
     return this.http.get<SubCategory[]>(`${this.baseUrl}/categories/${categoryId}/sub-categories`);
   }
 
+  createCategory(name: string): Observable<Category> {
+    return this.http.post<Category>(`${this.baseUrl}/categories/`, { name });
+  }
+
+  createSubCategory(categoryId: number, name: string): Observable<SubCategory> {
+    return this.http.post<SubCategory>(`${this.baseUrl}/categories/${categoryId}/sub-categories`, { name });
+  }
+
+  
   createPrompt(request: CreatePromptRequest): Observable<Prompt> {
     return this.http.post<Prompt>(`${this.baseUrl}/prompts/`, request);
   }
 
   getUserHistory(userId: number): Observable<Prompt[]> {
     return this.http.get<Prompt[]>(`${this.baseUrl}/prompts/user/${userId}`);
+  }
+
+
+  login(name: string, phone: string): Observable<User> {
+    return this.http.post<User>(`${this.baseUrl}/users/login`, { name, phone });
   }
 }

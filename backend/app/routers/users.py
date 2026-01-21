@@ -1,27 +1,58 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
+from pydantic import BaseModel
 
-from app.database import get_db
-from app.schemas import User, UserCreate
-from app.repositories import user_repo
+from .. import models, database
 
-router = APIRouter(prefix="/users", tags=["Users"])
+
+class UserBase(BaseModel):
+    name: str
+    phone: str
+
+class UserCreate(UserBase):
+    pass
+
+class User(UserBase):
+    id: int
+    class Config:
+        from_attributes = True
+
+
+router = APIRouter(prefix="/users", tags=["users"])
+get_db = database.get_db
+
 
 @router.post("/", response_model=User)
-def create_new_user(user: UserCreate, db: Session = Depends(get_db)):
-    existing_user = user_repo.get_user_by_phone(db, user.phone)
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
+
+    existing_user = db.query(models.User).filter(models.User.phone == user.phone).first()
     if existing_user:
+
         return existing_user
-    return user_repo.create_user(db, user)
+    
+
+    new_user = models.User(name=user.name, phone=user.phone)
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+
+@router.post("/login", response_model=User)
+def login(request: UserCreate, db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(
+        models.User.phone == request.phone,
+        models.User.name == request.name
+    ).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return user
+
 
 @router.get("/", response_model=List[User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return user_repo.get_users(db, skip=skip, limit=limit)
-
-@router.get("/{user_id}", response_model=User)
-def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = user_repo.get_user(db, user_id)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+    users = db.query(models.User).offset(skip).limit(limit).all()
+    return users

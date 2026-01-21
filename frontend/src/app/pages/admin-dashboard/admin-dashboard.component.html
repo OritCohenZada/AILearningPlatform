@@ -1,0 +1,148 @@
+<div class="h-[85vh] flex flex-col p-6">
+
+  <div class="flex justify-center mb-8">
+    <div class="bg-neutral-900 p-1.5 rounded-xl border border-gray-700 flex shadow-lg">
+      
+      <button (click)="activeTab = 'users'" 
+              [class.bg-amber-500]="activeTab === 'users'"
+              [class.text-black]="activeTab === 'users'"
+              class="px-8 py-3 rounded-lg font-bold transition-all duration-300 text-gray-400 hover:text-white flex items-center gap-2">
+        <span>👥</span> ניהול משתמשים
+      </button>
+
+      <button (click)="activeTab = 'content'" 
+              [class.bg-amber-500]="activeTab === 'content'"
+              [class.text-black]="activeTab === 'content'"
+              class="px-8 py-3 rounded-lg font-bold transition-all duration-300 text-gray-400 hover:text-white flex items-center gap-2">
+        <span>📚</span> ניהול תוכן
+      </button>
+
+    </div>
+  </div>
+
+
+  <div *ngIf="activeTab === 'users'" class="grid grid-cols-1 lg:grid-cols-3 gap-8 flex-1 overflow-hidden animate-fade-in">
+    
+    <div class="lg:col-span-1 bg-neutral-900 rounded-xl border border-amber-500/30 shadow-2xl overflow-hidden flex flex-col">
+      <div class="p-4 border-b border-gray-800 bg-neutral-800/50 flex justify-between items-center">
+        <h2 class="text-xl font-bold text-amber-500">רשימת משתמשים</h2>
+        <span class="bg-gray-800 text-gray-400 text-xs px-2 py-1 rounded-full">{{ users.length }}</span>
+      </div>
+      <div class="overflow-y-auto flex-1 p-2 space-y-2 custom-scrollbar">
+        <div *ngFor="let user of users" (click)="selectUser(user)"
+             class="p-4 rounded-lg cursor-pointer transition flex justify-between items-center group"
+             [class.bg-amber-600]="selectedUser?.id === user.id"
+             [class.text-black]="selectedUser?.id === user.id"
+             [class.hover:bg-neutral-800]="selectedUser?.id !== user.id">
+          <div>
+            <div class="font-bold">{{ user.name }}</div>
+            <div class="text-xs opacity-70 group-hover:text-white">{{ user.phone }}</div>
+          </div>
+          <div class="text-xs opacity-50">ID: {{ user.id }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2 bg-neutral-900 rounded-xl border border-gray-800 shadow-2xl p-6 overflow-hidden flex flex-col">
+      
+      <div *ngIf="!selectedUser" class="flex-1 flex flex-col items-center justify-center text-gray-500 text-center opacity-50">
+        <div class="text-6xl mb-4">👈</div>
+        <div class="text-xl">בחר משתמש מהרשימה<br>כדי לצפות בהיסטוריית הלמידה שלו</div>
+      </div>
+
+      <div *ngIf="selectedUser" class="flex flex-col h-full animate-fade-in">
+        <div class="flex justify-between items-end border-b border-gray-700 pb-4 mb-4">
+          <h2 class="text-2xl font-bold text-white">
+             תיק אישי: <span class="text-amber-500">{{ selectedUser.name }}</span>
+          </h2>
+          <div *ngIf="isLoadingUsers" class="text-amber-500 text-sm animate-pulse">טוען נתונים... ⏳</div>
+        </div>
+
+        <div class="overflow-y-auto flex-1 space-y-4 custom-scrollbar pr-2">
+          
+          <div *ngIf="userHistory.length === 0 && !isLoadingUsers" class="text-center py-10 border-2 border-dashed border-gray-800 rounded-xl text-gray-500">
+            המשתמש הזה עדיין לא ביצע למידה במערכת.
+          </div>
+
+          <div *ngFor="let item of userHistory" class="bg-neutral-800 p-5 rounded-xl border border-gray-700 hover:border-amber-500/30 transition shadow-lg">
+             <div class="flex items-start gap-3 mb-3">
+               <span class="text-2xl">❓</span>
+               <div>
+                 <p class="text-amber-500 font-bold text-sm">השאלה שנשאלה:</p>
+                 <p class="text-white font-medium">{{ item.prompt }}</p>
+               </div>
+             </div>
+             
+             <div class="bg-black/30 p-4 rounded-lg border border-gray-700/50">
+               <div class="flex items-start gap-3">
+                 <span class="text-2xl">💡</span>
+                 <div>
+                   <p class="text-green-500 font-bold text-sm">תשובת ה-AI:</p>
+                   <p class="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">{{ item.response }}</p>
+                 </div>
+               </div>
+             </div>
+             
+             <div class="mt-2 text-right text-xs text-gray-600">
+               {{ item.created_at | date:'dd/MM/yyyy HH:mm' }}
+             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div *ngIf="activeTab === 'content'" class="grid grid-cols-1 md:grid-cols-2 gap-8 animate-fade-in max-w-6xl mx-auto w-full">
+
+    <div class="bg-neutral-900 p-8 rounded-xl border border-amber-500/30 shadow-2xl relative overflow-hidden group hover:border-amber-500/60 transition">
+      <div class="absolute top-0 left-0 w-2 h-full bg-amber-500"></div>
+      <h2 class="text-2xl font-bold text-amber-500 mb-6 flex items-center gap-3">
+        <span>📂</span> הוספת נושא ראשי
+      </h2>
+      
+      <form [formGroup]="categoryForm" (ngSubmit)="addCategory()" class="space-y-6">
+        <div>
+          <label class="block text-gray-400 text-sm mb-2 font-bold">שם הנושא החדש</label>
+          <input formControlName="name" type="text" placeholder="למשל: סייבר, בישול, היסטוריה..."
+                 class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:border-amber-500 outline-none transition focus:ring-1 focus:ring-amber-500">
+        </div>
+        <button type="submit" [disabled]="categoryForm.invalid"
+                class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-bold py-3 rounded-lg transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
+          ➕ צור קטגוריה
+        </button>
+      </form>
+    </div>
+
+    <div class="bg-neutral-900 p-8 rounded-xl border border-green-500/30 shadow-2xl relative overflow-hidden group hover:border-green-500/60 transition">
+      <div class="absolute top-0 left-0 w-2 h-full bg-green-500"></div>
+      <h2 class="text-2xl font-bold text-green-500 mb-6 flex items-center gap-3">
+        <span>📑</span> הוספת תת-נושא
+      </h2>
+      
+      <form [formGroup]="subCategoryForm" (ngSubmit)="addSubCategory()" class="space-y-6">
+        <div>
+          <label class="block text-gray-400 text-sm mb-2 font-bold">לאיזה נושא ראשי זה שייך?</label>
+          <select formControlName="parentId" 
+                  class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:border-green-500 outline-none transition h-[58px]">
+            <option value="" disabled selected>בחר מהרשימה...</option>
+            <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-gray-400 text-sm mb-2 font-bold">שם התת-נושא</label>
+          <input formControlName="name" type="text" placeholder="למשל: התקפות רשת, אוכל איטלקי..."
+                 class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-4 text-white focus:border-green-500 outline-none transition focus:ring-1 focus:ring-green-500">
+        </div>
+
+        <button type="submit" [disabled]="subCategoryForm.invalid"
+                class="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-black font-bold py-3 rounded-lg transition transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
+          ➕ הוסף תת-נושא
+        </button>
+      </form>
+    </div>
+
+  </div>
+
+</div>
