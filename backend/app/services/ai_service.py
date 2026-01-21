@@ -7,7 +7,7 @@ class AIService:
     def generate_lesson(self, category: str, sub_category: str, prompt: str) -> str:
         try:
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",  
+                model="gpt-4o-mini",  
                 messages=[
                     {"role": "system", "content": "You are a helpful tutor generating concise lessons."},
                     {"role": "user", "content": f"Create a lesson about {sub_category} (in category {category}). The user asked: {prompt}"}
