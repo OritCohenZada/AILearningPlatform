@@ -1,0 +1,51 @@
+<div class="min-h-screen flex text-white font-sans dir-rtl">
+
+  <div class="hidden lg:flex w-1/2 bg-cover bg-center relative" 
+       style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop');">
+    <div class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-12 text-center">
+      <h1 class="text-5xl font-bold text-amber-500 mb-6 drop-shadow-lg">הצטרפי אלינו</h1>
+      <p class="text-xl text-gray-200 max-w-md leading-relaxed">
+        צור משתמש חדש והתחיל ללמוד בצורה חכמה ומותאמת אישית.
+      </p>
+    </div>
+  </div>
+
+  <div class="w-full lg:w-1/2 flex flex-col justify-center items-center bg-neutral-900 p-8">
+    <div class="w-full max-w-md space-y-8 animate-fade-in">
+      
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-green-500">✨ הרשמה חדשה</h2>
+        <p class="mt-2 text-gray-400">מלאי את הפרטים כדי לפתוח חשבון</p>
+      </div>
+
+      <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">שם מלא</label>
+          <input formControlName="name" type="text" 
+                 class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">מספר טלפון</label>
+          <input formControlName="phone" type="text" 
+                 class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
+        </div>
+
+        <button type="submit" [disabled]="signupForm.invalid || isLoading"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-black bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 transform active:scale-95 transition disabled:opacity-50">
+          {{ isLoading ? 'יוצר משתמש...' : 'הירשמי והתחילי 🚀' }}
+        </button>
+      </form>
+
+      <div class="text-center mt-6">
+        <p class="text-sm text-gray-400">
+          כבר יש לך חשבון? 
+          <a routerLink="/login" class="font-medium text-amber-500 hover:text-amber-400 transition cursor-pointer">
+            התחברי כאן
+          </a>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>

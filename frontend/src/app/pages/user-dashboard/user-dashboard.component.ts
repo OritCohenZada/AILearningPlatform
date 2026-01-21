@@ -5,13 +5,13 @@ import { ApiService } from '../../services/api.service';
 import { Category, SubCategory } from '../../models/category.model';
 import { User } from '../../models/user.model';
 import { Prompt } from '../../models/prompt.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-dashboard',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './user-dashboard.component.html',
-  styleUrl: './user-dashboard.component.css'
 })
 export class UserDashboardComponent implements OnInit {
 
@@ -31,7 +31,8 @@ export class UserDashboardComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private router: Router
   ) {
 
     this.userForm = this.fb.group({
@@ -46,22 +47,48 @@ export class UserDashboardComponent implements OnInit {
       prompt: ['', [Validators.required, Validators.minLength(5)]]
     });
   }
+ngOnInit(): void {
 
-  ngOnInit(): void {
-    this.loadInitialData();
+    const savedUser = localStorage.getItem('currentUser');
+
+    if (savedUser) {
+      this.selectedUser = JSON.parse(savedUser);
+      
+      if (this.selectedUser?.id) {
+        this.apiService.getUserHistory(this.selectedUser.id).subscribe({
+          next: (data) => this.history = data,
+          error: (err) => console.error('Failed to load history', err)
+        });
+      }
+
+      this.loadCategories(); 
+
+    } else {
+      this.router.navigate(['/login']);
+    }
   }
-
   
-  loadInitialData(): void {
+  // loadInitialData(): void {
 
-    this.apiService.getUsers().subscribe({
-      next: (data) => this.users = data,
-      error: (err) => console.error('Failed to load users', err)
-    });
+  //   this.apiService.getUsers().subscribe({
+  //     next: (data) => this.users = data,
+  //     error: (err) => console.error('Failed to load users', err)
+  //   });
 
  
+  //   this.apiService.getCategories().subscribe({
+  //     next: (data) => this.categories = data,
+  //     error: (err) => console.error('Failed to load categories', err)
+  //   });
+  // }
+
+
+  loadCategories(): void {
     this.apiService.getCategories().subscribe({
-      next: (data) => this.categories = data,
+      next: (data) => {
+        this.categories = data;
+        this.subCategories = []; 
+      },
       error: (err) => console.error('Failed to load categories', err)
     });
   }
@@ -137,6 +164,14 @@ export class UserDashboardComponent implements OnInit {
         this.isLoading = false;
         alert('Something went wrong with the AI service.');
       }
+
+      
     });
+  }
+
+ 
+  logout(): void {
+  localStorage.removeItem('currentUser'); 
+    this.router.navigate(['/login']);
   }
 }

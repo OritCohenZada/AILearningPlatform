@@ -10,3 +10,4 @@ class User(Base):
     phone = Column(String)
 
     prompts = relationship("Prompt", back_populates="user")
+
