@@ -1,51 +1,46 @@
-<div class="min-h-screen flex text-white font-sans dir-rtl">
+<div class="min-h-screen flex justify-center items-center bg-[#F3EFE0] font-sans relative overflow-hidden">
 
-  <div class="hidden lg:flex w-1/2 bg-cover bg-center relative" 
-       style="background-image: url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=2070&auto=format&fit=crop');">
-    <div class="absolute inset-0 bg-black/60 flex flex-col items-center justify-center p-12 text-center">
-      <h1 class="text-5xl font-bold text-amber-500 mb-6 drop-shadow-lg">הצטרפי אלינו</h1>
-      <p class="text-xl text-gray-200 max-w-md leading-relaxed">
-        צור משתמש חדש והתחיל ללמוד בצורה חכמה ומותאמת אישית.
+  <div class="absolute top-[-10%] right-[-5%] w-96 h-96 bg-[#B08D55]/5 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-[-10%] left-[-5%] w-96 h-96 bg-[#B08D55]/10 rounded-full blur-3xl"></div>
+
+  <div class="bg-white w-full max-w-lg p-10 md:p-14 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-white/50 relative z-10 animate-fade-in-up">
+    
+    <div class="text-center mb-8">
+      <h3 class="text-[#B08D55] font-bold tracking-[0.2em] uppercase text-xs mb-3">GenLearn AI</h3>
+      <h2 class="text-4xl font-serif-display font-bold text-[#1a1a1a] mb-2">Create Account</h2>
+      <p class="text-gray-400 text-base">Start your personalized learning journey.</p>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="space-y-5">
+      
+      <div class="space-y-1">
+        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide ml-1">Full Name</label>
+        <input formControlName="name" type="text" 
+               class="w-full bg-gray-50 border border-gray-100 p-4 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#B08D55]/20 focus:border-[#B08D55] transition-all font-medium">
+      </div>
+
+      <div class="space-y-1">
+        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wide ml-1">Phone Number</label>
+        <input formControlName="phone" type="text" 
+               class="w-full bg-gray-50 border border-gray-100 p-4 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#B08D55]/20 focus:border-[#B08D55] transition-all font-medium">
+      </div>
+
+      <button type="submit" [disabled]="signupForm.invalid || isLoading"
+              class="w-full py-4 bg-[#1a1a1a] text-white rounded-xl font-bold text-lg hover:bg-[#B08D55] hover:shadow-lg transform active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed mt-4 flex justify-center items-center gap-2">
+        <span *ngIf="isLoading" class="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></span>
+        {{ isLoading ? 'Creating Account...' : 'Sign Up ' }}
+      </button>
+
+    </form>
+
+    <div class="text-center mt-8 pt-6 border-t border-gray-100">
+      <p class="text-gray-500 text-sm">
+        Already have an account? 
+        <a routerLink="/login" class="font-bold text-[#1a1a1a] hover:text-[#B08D55] transition cursor-pointer underline decoration-2 decoration-gray-200 hover:decoration-[#B08D55] underline-offset-4">
+          Log in here
+        </a>
       </p>
     </div>
-  </div>
 
-  <div class="w-full lg:w-1/2 flex flex-col justify-center items-center bg-neutral-900 p-8">
-    <div class="w-full max-w-md space-y-8 animate-fade-in">
-      
-      <div class="text-center">
-        <h2 class="text-3xl font-bold text-green-500">✨ הרשמה חדשה</h2>
-        <p class="mt-2 text-gray-400">מלאי את הפרטים כדי לפתוח חשבון</p>
-      </div>
-
-      <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="space-y-6">
-        <div>
-          <label class="block text-sm font-medium text-gray-400 mb-2">שם מלא</label>
-          <input formControlName="name" type="text" 
-                 class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
-        </div>
-
-        <div>
-          <label class="block text-sm font-medium text-gray-400 mb-2">מספר טלפון</label>
-          <input formControlName="phone" type="text" 
-                 class="w-full bg-neutral-800 border border-gray-700 rounded-lg p-3 text-white focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition">
-        </div>
-
-        <button type="submit" [disabled]="signupForm.invalid || isLoading"
-                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-black bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 transform active:scale-95 transition disabled:opacity-50">
-          {{ isLoading ? 'יוצר משתמש...' : 'הירשמי והתחילי 🚀' }}
-        </button>
-      </form>
-
-      <div class="text-center mt-6">
-        <p class="text-sm text-gray-400">
-          כבר יש לך חשבון? 
-          <a routerLink="/login" class="font-medium text-amber-500 hover:text-amber-400 transition cursor-pointer">
-            התחברי כאן
-          </a>
-        </p>
-      </div>
-
-    </div>
   </div>
 </div>
