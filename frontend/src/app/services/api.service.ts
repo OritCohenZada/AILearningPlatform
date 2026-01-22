@@ -18,8 +18,8 @@ export class ApiService {
 
  
 
-  getUsers(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}/users`);
+  getUsers(skip: number = 0, limit: number = 100): Observable<User[]> {
+    return this.http.get<User[]>(`${this.baseUrl}/users?skip=${skip}&limit=${limit}`);
   }
 
 

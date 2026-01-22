@@ -54,13 +54,31 @@ export class AdminDashboardComponent implements OnInit {
     });
   }
 
+  // --- משתני פגינציה (חדש) ---
+  currentSkip: number = 0; 
+  limit: number = 5;
+
   ngOnInit(): void {
     this.loadUsers();
     this.loadCategories();
   }
 
   loadUsers(): void {
-    this.apiService.getUsers().subscribe(data => this.users = data);
+    this.apiService.getUsers(this.currentSkip, this.limit).subscribe(data => this.users = data);
+  }
+
+  nextPage(): void {
+    if (this.users.length === this.limit) {
+      this.currentSkip += this.limit;
+      this.loadUsers();
+    }
+  }
+
+  prevPage(): void {
+    if (this.currentSkip > 0) {
+      this.currentSkip -= this.limit;
+      this.loadUsers();
+    }
   }
 
   loadCategories(): void {
