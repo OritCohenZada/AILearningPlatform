@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ApiService } from '../services/api.service';
+import { ApiService } from '../services/api.service'; 
 
 @Component({
   selector: 'app-login',
@@ -34,22 +34,22 @@ export class LoginComponent {
     this.errorMessage = '';
     const { name, phone } = this.loginForm.value;
 
-    if (name === 'orit' && phone === '0583282105') {
-      this.router.navigate(['/admin']);
-      return;
-    }
-
-
     this.apiService.login(name, phone).subscribe({
-      next: (user) => {
-        localStorage.setItem('currentUser', JSON.stringify(user)); 
-        this.router.navigate(['/user']); 
+      next: () => {
+        if (this.apiService.isAdmin()) {
+          this.router.navigate(['/admin']); 
+        } else {
+        this.router.navigate(['/user']);
+        }
       },
       error: (err) => {
         this.isLoading = false;
-        if (err.status === 404) {
-          this.errorMessage = 'משתמש לא נמצא. נסה שוב או הירשם.';
+        
+
+        if (err.status === 404 || err.status === 401) {
+          this.errorMessage = 'שם משתמש או טלפון שגויים.';
         } else {
+          console.error(err); 
           this.errorMessage = 'שגיאת התחברות. נסה מאוחר יותר.';
         }
       }

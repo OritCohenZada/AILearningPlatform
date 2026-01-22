@@ -5,7 +5,7 @@ import { RouterOutlet, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink], // <--- מאפשרים שימוש בראוטר ובלינקים
+  imports: [CommonModule, RouterOutlet, RouterLink], 
   templateUrl: './app.html',
 })
 export class AppComponent {
