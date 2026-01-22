@@ -1,84 +1,99 @@
-<div class="min-h-[80vh] flex flex-col items-center justify-center p-4">
+<div class="min-h-screen font-sans bg-[#F3EFE0] pb-20 relative">
 
-
-
-  <div *ngIf="selectedUser" class="w-full max-w-5xl animate-fade-in-up">
+  <div class="absolute top-0 right-0 w-[500px] h-[500px] bg-[#B08D55]/5 rounded-full blur-[100px] -z-10"></div>
+  
+  <div *ngIf="selectedUser" class="max-w-6xl mx-auto px-6 pt-10 animate-fade-in-up">
     
-    <div class="flex justify-between items-center mb-8 bg-neutral-900 p-6 rounded-xl border border-amber-500/20">
+    <div class="flex justify-between items-end mb-12 border-b border-[#B08D55]/20 pb-6">
       <div>
-        <h2 class="text-3xl font-bold text-white">
-          שלום, <span class="text-amber-500">{{ selectedUser.name }}</span> 👋
+        <h3 class="text-[#B08D55] font-bold tracking-widest uppercase text-xs mb-2">My Dashboard</h3>
+        <h2 class="text-4xl md:text-5xl font-serif-display font-bold text-[#1a1a1a]">
+          Hello, <span class="text-[#B08D55]">{{ selectedUser.name }}</span>
         </h2>
-        <p class="text-gray-400 text-sm mt-1">מוכנה ללמוד משהו חדש היום?</p>
+        <p class="text-gray-500 mt-2 text-lg">Ready to learn something new today?</p>
       </div>
-      <button (click)="logout()" class="text-gray-400 hover:text-white hover:bg-red-500/10 px-4 py-2 rounded-lg transition border border-gray-700 hover:border-red-500">
-        התנתקות ↪
+      <button (click)="logout()" class="px-6 py-2 rounded-full border border-gray-300 text-gray-500 font-bold text-sm hover:bg-[#1a1a1a] hover:text-white hover:border-[#1a1a1a] transition-all flex items-center gap-2">
+        Logout<span></span>
       </button>
     </div>
 
-    <div class="bg-neutral-900 p-8 rounded-2xl border border-amber-500/30 shadow-2xl relative mb-8">
+    <div class="bg-white p-10 rounded-[2.5rem] shadow-[0_20px_60px_rgba(0,0,0,0.05)] border border-white/60 relative mb-16">
         
-      <div *ngIf="isLoading" class="absolute inset-0 bg-black/80 flex flex-col items-center justify-center z-10 rounded-2xl backdrop-blur-sm">
-        <div class="text-amber-500 text-4xl animate-spin mb-4">✨</div>
-        <div class="text-white text-xl font-bold">ה-AI מכין לך שיעור...</div>
+      <div *ngIf="isLoading" class="absolute inset-0 bg-white/90 z-20 rounded-[2.5rem] backdrop-blur-[2px] flex flex-col items-center justify-center">
+        <div class="w-16 h-16 border-4 border-[#B08D55]/20 border-t-[#B08D55] rounded-full animate-spin mb-6"></div>
+        <div class="text-[#1a1a1a] text-2xl font-serif-display font-bold">Creating your lesson...</div>
+        <p class="text-gray-400 mt-2">Consulting the AI experts</p>
       </div>
 
-      <form [formGroup]="learningForm" (ngSubmit)="submitPrompt()" class="space-y-6">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label class="block text-amber-500 font-bold mb-2">נושא ראשי</label>
-            <select formControlName="category" (change)="onCategoryChange()"
-                    class="w-full bg-neutral-800 border border-gray-600 rounded-lg p-3 text-white focus:border-amber-500 outline-none h-12">
-              <option value="" disabled selected>בחר נושא...</option>
-              <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
-            </select>
+      <form [formGroup]="learningForm" (ngSubmit)="submitPrompt()" class="space-y-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide ml-1">Main Topic</label>
+            <div class="relative">
+                <select formControlName="category" (change)="onCategoryChange()"
+                        class="w-full bg-gray-50 border border-gray-100 rounded-xl p-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#B08D55]/20 focus:border-[#B08D55] appearance-none font-medium cursor-pointer transition shadow-sm hover:shadow-md">
+                  <option value="" disabled selected>Select a topic...</option>
+                  <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+                </select>
+                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">▼</div>
+            </div>
           </div>
 
-          <div>
-            <label class="block text-amber-500 font-bold mb-2">תת-נושא</label>
-            <select formControlName="subCategory"
-                    class="w-full bg-neutral-800 border border-gray-600 rounded-lg p-3 text-white focus:border-amber-500 outline-none h-12">
-              <option value="" disabled selected>בחר תת-נושא...</option>
-              <option *ngFor="let sub of subCategories" [value]="sub.id">{{ sub.name }}</option>
-            </select>
+          <div class="space-y-2">
+            <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide ml-1">Sub Topic</label>
+            <div class="relative">
+                <select formControlName="subCategory"
+                        class="w-full bg-gray-50 border border-gray-100 rounded-xl p-4 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#B08D55]/20 focus:border-[#B08D55] appearance-none font-medium cursor-pointer transition shadow-sm hover:shadow-md">
+                  <option value="" disabled selected>Select sub-topic...</option>
+                  <option *ngFor="let sub of subCategories" [value]="sub.id">{{ sub.name }}</option>
+                </select>
+                <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">▼</div>
+            </div>
           </div>
         </div>
 
-        <div>
-          <label class="block text-amber-500 font-bold mb-2">מה תרצי ללמוד היום?</label>
-          <textarea formControlName="prompt" rows="3" placeholder="למשל: תסביר לי איך עובד מנוע של מכונית..."
-                    class="w-full bg-neutral-800 border border-gray-600 rounded-lg p-4 text-white focus:border-amber-500 outline-none resize-none"></textarea>
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-gray-400 uppercase tracking-wide ml-1">What do you want to learn?</label>
+          <textarea formControlName="prompt" rows="3" placeholder="e.g., Explain how a car engine works..."
+                    class="w-full bg-gray-50 border border-gray-100 rounded-xl p-5 text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#B08D55]/20 focus:border-[#B08D55] resize-none font-medium transition shadow-sm hover:shadow-md placeholder-gray-400"></textarea>
         </div>
 
         <button type="submit" [disabled]="learningForm.invalid || isLoading"
-                class="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black text-lg font-bold py-3 rounded-lg shadow-lg transform active:scale-[0.98] transition disabled:opacity-50 disabled:cursor-not-allowed">
-          🎓 למד אותי!
+                class="w-full bg-[#1a1a1a] text-white text-lg font-bold py-5 rounded-2xl hover:bg-[#B08D55] shadow-lg hover:shadow-xl transform active:scale-[0.99] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3">
+          <span>Teach Me</span>
+          <span class="text-xl"></span>
         </button>
       </form>
     </div>
 
-    <div *ngIf="currentResponse" class="mb-8 animate-fade-in">
-      <div class="bg-neutral-800 p-8 rounded-2xl border-l-4 border-green-500 shadow-xl">
-        <h3 class="text-2xl font-bold text-green-400 mb-4 flex items-center gap-2">
-          <span>💡</span> התשובה שלך:
+    <div *ngIf="currentResponse" class="mb-16 animate-fade-in-up">
+      <div class="bg-white p-10 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.05)] border-l-8 border-[#B08D55]">
+        <h3 class="text-2xl font-serif-display font-bold text-[#1a1a1a] mb-6 flex items-center gap-3">
+          <span class="bg-[#B08D55]/10 p-2 rounded-lg text-[#B08D55]"></span> 
+          Your Answer:
         </h3>
-        <div class="prose prose-invert max-w-none text-gray-200 whitespace-pre-wrap leading-relaxed text-lg">
+        <div class="prose prose-lg max-w-none text-gray-600 leading-relaxed font-light">
           {{ currentResponse }}
         </div>
       </div>
     </div>
 
     <div *ngIf="history.length > 0">
-      <h3 class="text-xl font-bold text-gray-400 mb-4 pb-2 border-b border-gray-800">📜 היסטוריית למידה אחרונה</h3>
-      <div class="grid gap-4">
-        <div *ngFor="let item of history" class="bg-neutral-900 p-5 rounded-xl border border-gray-800 hover:border-amber-500/30 transition group">
-          <div class="flex justify-between text-sm text-gray-500 mb-2">
-            <span>{{ item.created_at | date:'short' }}</span>
+      <h3 class="text-2xl font-serif-display font-bold text-[#1a1a1a] mb-8 flex items-center gap-3">
+          <span></span> Recent Learning History
+      </h3>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div *ngFor="let item of history" class="bg-white p-6 rounded-3xl border border-gray-100 hover:border-[#B08D55]/50 hover:shadow-lg transition-all duration-300 group cursor-default">
+          <div class="flex justify-between text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+            <span>{{ item.created_at | date:'mediumDate' }}</span>
           </div>
-          <p class="font-bold text-amber-500 mb-2 group-hover:text-amber-400 transition">{{ item.prompt }}</p>
-          <p class="text-gray-400 text-sm line-clamp-2">{{ item.response }}</p>
+          <p class="font-bold text-lg text-[#1a1a1a] mb-3 group-hover:text-[#B08D55] transition line-clamp-1">{{ item.prompt }}</p>
+          <p class="text-gray-500 text-sm line-clamp-3 leading-relaxed">{{ item.response }}</p>
         </div>
       </div>
     </div>
 
-  </div> </div>
+  </div> 
+</div>
