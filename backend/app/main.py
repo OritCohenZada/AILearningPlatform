@@ -2,9 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.routers import users, categories, prompts
+from app.database import engine, Base 
+from app import models
+
+Base.metadata.create_all(bind=engine)
+
 
 app = FastAPI(title=settings.PROJECT_NAME)
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -13,7 +17,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 app.include_router(users.router)
 app.include_router(categories.router)
