@@ -1,34 +1,38 @@
-<div class="min-h-screen font-sans">
 
-  <header class="bg-beige-hero relative pb-32">
+
+
+<div class="font-sans text-[#1a1a1a] scroll-smooth">
+
+  <nav class="fixed top-0 left-0 w-full z-50 px-8 py-6 flex justify-between items-center bg-[#F3EFE0]/90 backdrop-blur-md border-b border-gray-200/50 transition-all duration-300">
     
-    <nav class="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center">
-      <div class="w-10"></div> 
+    <div class="flex gap-8 text-sm font-bold uppercase tracking-wider text-gray-600">
+      <a href="#hero" class="hover:text-black transition decoration-2 underline-offset-4 hover:underline">Home</a>
+      <a href="#features" class="hover:text-black transition decoration-2 underline-offset-4 hover:underline">About us</a>
+    </div>
+
+    <div class="flex gap-4">
+      <a routerLink="/login" class="px-6 py-2 rounded-full border border-gray-300 text-sm font-bold hover:bg-black hover:text-white transition cursor-pointer">Log in</a>
+      <a href="#contact" class="px-6 py-2 rounded-full bg-black text-white text-sm font-bold hover:bg-[#B08D55] transition cursor-pointer shadow-lg">Contact</a>
+    </div>
+  </nav>
+
+  <header id="hero" class="min-h-screen flex items-center justify-center bg-beige-hero relative px-6 pt-20">
+    <div class="max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
       
-      <div class="hidden md:flex gap-8 text-sm font-medium text-gray-600">
-        <a href="#hero" class="hover:text-black transition">Home</a>
-        <a href="#features" class="hover:text-black transition">About us</a>
-      </div>
-
-      <div class="flex gap-4">
-        <a routerLink="/login" class="btn-nav-light cursor-pointer">Log in</a>
-        <a href="#contact" class="btn-nav-dark cursor-pointer">Contact</a>
-      </div>
-    </nav>
-
-    <div id="hero" class="max-w-7xl mx-auto px-6 pt-12 pb-20 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
       <div class="animate-fade-in-up">
-        <h2 class="text-white/80 font-serif-display text-3xl mb-2 drop-shadow-sm">AI Learning System</h2>
-        <h1 class="text-6xl md:text-8xl font-serif-display font-bold text-[#1a1a1a] mb-6 leading-tight">
+        <h2 class="text-[#B08D55] font-bold tracking-[0.2em] uppercase text-sm mb-4">AI Learning System</h2>
+        <h1 class="text-6xl md:text-8xl font-serif-display font-bold text-[#1a1a1a] mb-8 leading-tight">
           GenLearn
         </h1>
-        <p class="text-gray-600 text-lg max-w-lg mb-10 leading-relaxed">
+        <p class="text-gray-600 text-xl max-w-lg mb-12 leading-relaxed font-light">
           The most advanced AI-powered learning system. Personalized, dynamic content, and a learning experience like no other.
         </p>
 
-        <div class="flex gap-4">
-          <a routerLink="/signup" class="btn-gold cursor-pointer">Get Started</a>
-          <a href="#contact" class="btn-white cursor-pointer">Contact now</a>
+        <div class="flex gap-5">
+         <a routerLink="/signup" class="px-8 py-4 bg-[#B08D55] text-white rounded-full font-bold text-lg hover:bg-[#9A7B4F] transition shadow-xl cursor-pointer">
+  Get Started
+</a>
+          <a href="#contact" class="px-8 py-4 bg-white text-[#1a1a1a] border border-gray-200 rounded-full font-bold text-lg hover:bg-gray-50 transition cursor-pointer">Contact now</a>
         </div>
       </div>
 
@@ -36,69 +40,105 @@
     </div>
   </header>
 
-  <section id="features" class="max-w-6xl mx-auto px-6 -mt-20 relative z-10 mb-32">
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+  <section id="features" class="min-h-screen flex items-center justify-center bg-white px-6 relative z-10 border-t border-gray-100">
+    <div class="max-w-7xl w-full">
       
-      <div class="feature-card group">
-        <div class="w-16 h-16 mb-6 text-4xl text-[#B08D55] group-hover:scale-110 transition">
-            🤖
-            </div>
-        <h3 class="font-bold text-xl text-gray-900 mb-3">Personalized AI</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">
-          Embrace the experience usage of personalized AI promotes content and your limitations.
-        </p>
+      <div class="text-center mb-16">
+        <h2 class="font-serif-display text-4xl md:text-5xl font-bold mb-4">Why Choose Us</h2>
+        <p class="text-gray-500">Experience the future of education.</p>
       </div>
 
-      <div class="feature-card group">
-        <div class="w-16 h-16 mb-6 text-4xl text-[#B08D55] group-hover:scale-110 transition">
-            ⏱️
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+        
+        <div class="group p-8 rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl transition-all duration-300 bg-gray-50/50">
+          <div class="w-14 h-14 mb-8 text-[#1a1a1a] group-hover:scale-110 transition duration-300">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full h-full">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12h1.5m12 0h1.5m-1.5 3.75h1.5m-1.5 3.75h-1.5A2.25 2.25 0 0116.5 21h-9a2.25 2.25 0 01-2.25-2.25v-1.5m0 0h1.5m0 0h1.5m1.5-6H3.75a2.25 2.25 0 01-2.25-2.25V6.75A2.25 2.25 0 013.75 4.5h16.5A2.25 2.25 0 0122.5 6.75v5.25a2.25 2.25 0 01-2.25 2.25H18" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-2xl text-gray-900 mb-4">Personalized AI</h3>
+          <p class="text-gray-500 leading-relaxed">
+            Content tailored specifically to your learning style and limitations using advanced algorithms.
+          </p>
         </div>
-        <h3 class="font-bold text-xl text-gray-900 mb-3">Speed & Responsiveness</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">
-          Provides capital and real users manage. It is merit one speed & responsiveness.
-        </p>
-      </div>
 
-      <div class="feature-card group">
-        <div class="w-16 h-16 mb-6 text-4xl text-[#B08D55] group-hover:scale-110 transition">
-            📊
+        <div class="group p-8 rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl transition-all duration-300 bg-gray-50/50">
+          <div class="w-14 h-14 mb-8 text-[#1a1a1a] group-hover:scale-110 transition duration-300">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full h-full">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-2xl text-gray-900 mb-4">Speed & Response</h3>
+          <p class="text-gray-500 leading-relaxed">
+            Real-time feedback and lightning-fast interaction to keep you in the flow state.
+          </p>
         </div>
-        <h3 class="font-bold text-xl text-gray-900 mb-3">Progress Tracking</h3>
-        <p class="text-gray-500 text-sm leading-relaxed">
-          Take up the plan of events voting progress tracking to collecting used and heavy ethics.
-        </p>
-      </div>
 
+        <div class="group p-8 rounded-3xl border border-gray-100 hover:border-gray-200 hover:shadow-2xl transition-all duration-300 bg-gray-50/50">
+          <div class="w-14 h-14 mb-8 text-[#1a1a1a] group-hover:scale-110 transition duration-300">
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-full h-full">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            </svg>
+          </div>
+          <h3 class="font-bold text-2xl text-gray-900 mb-4">Progress Tracking</h3>
+          <p class="text-gray-500 leading-relaxed">
+            Detailed analytics and visual progress bars to help you master every topic.
+          </p>
+        </div>
+
+      </div>
     </div>
   </section>
 
-  <section id="contact" class="max-w-7xl mx-auto px-6 pb-20">
-    <div class="bg-[#F3EFE0] rounded-[2rem] p-12 md:p-20 grid grid-cols-1 md:grid-cols-3 gap-12">
+ <section id="contact" class="min-h-screen flex items-center justify-center bg-[#F3EFE0] px-4 relative py-10">
+  <div class="max-w-6xl w-full mx-auto">
+    
+    <div class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-2xl border border-white/50 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-center">
       
       <div class="md:col-span-1">
-        <h2 class="font-serif-display text-5xl text-[#1a1a1a] mb-4">Contact</h2>
-        <p class="text-gray-600">Get in touch with us.</p>
+        <h3 class="text-[#B08D55] font-bold tracking-[0.2em] uppercase text-xs mb-2">Get in touch</h3>
+        <h2 class="font-serif-display text-4xl md:text-5xl text-[#1a1a1a] mb-4">Contact</h2>
+        <p class="text-gray-500 text-base leading-relaxed">
+          Ready to start learning? Send us a message and we'll get back to you shortly.
+        </p>
       </div>
 
       <div class="md:col-span-2">
-        <form class="space-y-6 max-w-md ml-auto">
-          <input type="text" placeholder="First name" 
-                 class="w-full bg-white border border-transparent p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B08D55]/50 transition shadow-sm placeholder-gray-400">
+        <form [formGroup]="contactForm" (ngSubmit)="onSendMessage()" class="space-y-3 max-w-lg ml-auto">
           
-          <input type="email" placeholder="Email" 
-                 class="w-full bg-white border border-transparent p-4 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#B08D55]/50 transition shadow-sm placeholder-gray-400">
+          <div>
+              <input formControlName="name" type="text" placeholder="Name" 
+                 class="w-full bg-gray-50 border border-gray-100 p-3.5 rounded-xl focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#B08D55]/30 transition text-sm placeholder-gray-400"
+                 [class.border-red-500]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched">
+          </div>
           
-          <button class="w-full bg-[#1a1a1a] text-white font-bold py-4 rounded-xl hover:bg-black transition shadow-lg">
-            Send Message
+          <div>
+              <input formControlName="email" type="email" placeholder="Email" 
+                 class="w-full bg-gray-50 border border-gray-100 p-3.5 rounded-xl focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#B08D55]/30 transition text-sm placeholder-gray-400"
+                 [class.border-red-500]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched">
+          </div>
+
+          <div>
+              <textarea formControlName="message" rows="3" placeholder="How can we help?" 
+                 class="w-full bg-gray-50 border border-gray-100 p-3.5 rounded-xl focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#B08D55]/30 transition text-sm placeholder-gray-400 resize-none"
+                 [class.border-red-500]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"></textarea>
+          </div>
+          
+          <button type="submit" 
+                  [disabled]="contactForm.invalid || isSubmitting"
+                  class="w-full bg-[#1a1a1a] text-white font-bold py-3.5 rounded-xl hover:bg-[#B08D55] transition duration-300 shadow-lg text-sm mt-2 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center gap-2">
+            <span *ngIf="isSubmitting" class="animate-spin w-4 h-4 border-2 border-white border-t-transparent rounded-full"></span>
+            {{ isSubmitting ? 'Sending...' : 'Send Message' }}
           </button>
         </form>
       </div>
 
     </div>
-  </section>
+  </div>
 
-  <footer class="text-center py-8 text-gray-400 text-xs">
+  <footer class="absolute bottom-4 left-0 w-full text-center text-gray-400 text-[10px]">
     © 2026 GenLearn AI. Designed with style.
   </footer>
+</section>
 
 </div>

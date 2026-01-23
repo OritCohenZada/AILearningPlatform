@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ApiService } from '../services/api.service'; // ודאי שהנתיב נכון
+import { ApiService } from '../../services/api.service'; // ודאי שהנתיב נכון
 
 @Component({
   selector: 'app-signup',
@@ -37,19 +37,14 @@ export class SignupComponent {
     this.apiService.createUser(name, phone).subscribe({
       next: () => {
         
-        // 2. שלב שני: כניסה אוטומטית (כדי לקבל את הטוקן!)
-        console.log("הרשמה הצליחה, מבצע כניסה אוטומטית...");
+
         
         this.apiService.login(name, phone).subscribe({
           next: () => {
-            // 3. שלב שלישי: ניווט לדף המשתמש
-            console.log("כניסה אוטומטית הצליחה!");
             this.router.navigate(['/user']);
           },
           error: (loginErr) => {
-            console.error("הרשמה הצליחה אבל כניסה נכשלה", loginErr);
             this.isLoading = false;
-            // במקרה נדיר זה, נעביר אותו ללוגין ידני
             this.router.navigate(['/login']);
           }
         });

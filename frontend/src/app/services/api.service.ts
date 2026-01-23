@@ -107,4 +107,8 @@ export class ApiService {
   getUserHistory(userId: number): Observable<Prompt[]> {
     return this.http.get<Prompt[]>(`${this.baseUrl}/prompts/user/${userId}`);
   }
+
+  sendContactMessage(name: string, email: string, message: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/contact`, { name, email, message });
+  }
 }
