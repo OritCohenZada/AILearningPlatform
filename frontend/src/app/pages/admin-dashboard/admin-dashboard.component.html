@@ -1,3 +1,6 @@
+
+
+
 <div class="h-screen w-full bg-[#F3EFE0] flex flex-col overflow-hidden font-sans text-[#1a1a1a] dir-rtl relative">
 
   <div class="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-[#B08D55]/5 rounded-full blur-[120px] pointer-events-none"></div>
@@ -75,11 +78,11 @@
                 </div>
               </div>
 
-              <div class="flex gap-1" *ngIf="selectedUser?.id === user.id">
-                 <button (click)="openEditUserModal(user, $event)" class="p-1.5 hover:bg-white/20 rounded-lg transition" title="Edit">
+              <div class="flex gap-1">
+                 <button (click)="openEditUserModal(user, $event)" class="p-1.5  text-gray-400 hover:text-black hover:bg-gray-100 rounded-lg transition" title="Edit">
                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" /></svg>
                  </button>
-                 <button (click)="deleteUser(user, $event)" class="p-1.5 hover:bg-red-500/20 hover:text-red-300 rounded-lg transition" title="Delete">
+                 <button (click)="deleteUser(user, $event)" class="p-1.5 hover:bg-red-50 text-gray-400 hover:text-red-500 rounded-lg transition" title="Delete">
                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" /></svg>
                  </button>
               </div>
@@ -165,26 +168,39 @@
             </div>
 
             <div class="p-3 bg-white">
-               <div *ngIf="!category.sub_categories?.length" class="text-xs text-gray-400 italic text-center py-2">Empty</div>
+               <div *ngIf="!category.sub_categories.length"  class="text-xs text-gray-400 italic text-center py-2">Empty</div>
                
                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-                  <div *ngFor="let sub of category.sub_categories" class="flex justify-between items-center p-2.5 bg-gray-50 border border-gray-100 rounded-lg hover:border-gray-300 transition group">
+                 <div *ngFor="let sub of category.sub_categories" class="flex justify-between items-center p-2.5 bg-gray-50 border border-gray-100 rounded-lg hover:border-gray-300 transition group">
                      
                      <div class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-300 transform ">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v7a4 4 0 0 0 4 4h12m-3-3l3 3m-3 3l3-3" />
-</svg>
-                        <span class="text-xs font-medium text-gray-600">{{ sub.name }}</span>
+                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-300 transform">
+                         <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v7a4 4 0 0 0 4 4h12m-3-3l3 3m-3 3l3-3" />
+                       </svg>
+                       <span class="text-xs font-medium text-gray-600">{{ sub.name }}</span>
                      </div>
                      
-                     <button (click)="deleteSubCategory(sub.id)" class="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition">
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-gray-300 transform scale-x-[-1]">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v7a4 4 0 0 0 4 4h12m-3-3l3 3m-3 3l3-3" />
-</svg>
-                     </button>
-                  </div>
-               </div>
+                     <div class="flex items-center gap-1"> 
+                       
+                       <button (click)="openEditSubCategoryModal(sub, category.id)" 
+                               class="p-1.5 rounded-md text-gray-400 hover:text-black hover:bg-gray-200 transition" 
+                               title="Edit">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5">
+                               <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+                           </svg>
+                       </button>
 
+                       <button (click)="deleteSubCategory(sub.id)" 
+                               class="p-1.5 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 transition" 
+                               title="Delete">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-3.5 h-3.5">
+                               <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                           </svg>
+                       </button>
+                     </div>
+
+                 </div>
+               </div>
             </div>
          </div>
       </div>
@@ -195,7 +211,10 @@
   <div *ngIf="showUserModal || showCategoryModal" class="fixed inset-0 z-50 flex items-center justify-center bg-[#1a1a1a]/40 backdrop-blur-sm p-4 animate-fade-in">
      <div class="bg-white w-full max-w-md rounded-[2.5rem] shadow-2xl p-10 relative animate-scale-up">
         <h2 class="text-2xl font-serif-display font-bold text-[#1a1a1a] text-center mb-6">
-           {{ isEditing ? 'Edit' : 'Add' }} Entry
+           {{ isEditing ? 'Edit' : 'Add' }} 
+           <span *ngIf="showUserModal">User</span>
+           <span *ngIf="!showUserModal && modalType === 'category'">Category</span>
+           <span *ngIf="!showUserModal && modalType === 'sub-category'">Sub-Category</span>
         </h2>
         
         <form [formGroup]="showUserModal ? userForm : contentForm" (ngSubmit)="showUserModal ? saveUser() : saveContent()" class="space-y-4">
@@ -216,4 +235,34 @@
      </div>
   </div>
 
+  <div *ngIf="showDeleteModal" class="fixed inset-0 z-[60] flex items-center justify-center bg-[#1a1a1a]/40 backdrop-blur-sm p-4 animate-fade-in">
+    <div class="bg-white w-full max-w-sm rounded-[2rem] shadow-2xl p-8 relative animate-scale-up text-center border border-red-100">
+       
+       <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4 text-red-500">
+         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8">
+           <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+         </svg>
+       </div>
+
+       <h2 class="text-xl font-serif-display font-bold text-[#1a1a1a] mb-2">
+         Are you sure?
+       </h2>
+       
+       <p class="text-sm text-gray-500 mb-8 px-4">
+         This action cannot be undone. 
+         <span *ngIf="deleteType === 'user'">This user will be permanently deleted.</span>
+         <span *ngIf="deleteType === 'category'">This category and all its topics will be lost.</span>
+         <span *ngIf="deleteType === 'sub-category'">This sub-category will be deleted.</span>
+       </p>
+       
+       <div class="flex gap-3">
+         <button (click)="closeDeleteModal()" class="flex-1 py-3 rounded-xl border border-gray-200 text-gray-500 font-bold hover:bg-gray-50 transition text-sm">
+             Cancel
+         </button>
+         <button (click)="confirmDelete()" class="flex-1 bg-red-500 text-white font-bold py-3 rounded-xl hover:bg-red-600 transition shadow-lg shadow-red-500/20 text-sm">
+             Delete
+         </button>
+       </div>
+    </div>
+ </div>
 </div>

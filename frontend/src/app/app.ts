@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterLink } from '@angular/router'; 
+import { Component, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common'; 
+import { ToastService } from './services/toast.service'; 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink], 
-  templateUrl: './app.html',
+  imports: [RouterOutlet, CommonModule], 
+  templateUrl: './app.html', 
 })
 export class AppComponent {
-  title = 'AI Learning Platform';
+  toastService = inject(ToastService);
 }

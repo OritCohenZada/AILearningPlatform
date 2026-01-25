@@ -8,47 +8,67 @@
     font-family: 'DM Sans', sans-serif;
     background-color: #ffffff;
     color: #1a1a1a;
-    direction: ltr; /* אנגלית */
+    direction: ltr; 
   }
 
-  /* כותרות יוקרתיות (כמו בתמונה) */
   .font-serif-display {
     font-family: 'Playfair Display', serif;
   }
 }
 
 @layer components {
-  /* כפתור זהב-חום (Get Started) */
+
   .btn-gold {
     @apply bg-[#B08D55] text-white px-8 py-3 rounded-full font-medium hover:bg-[#967642] transition-all shadow-md hover:shadow-lg;
   }
 
-  /* כפתור לבן (Contact now) */
   .btn-white {
     @apply bg-white text-[#B08D55] px-8 py-3 rounded-full font-medium border border-transparent hover:border-[#B08D55] transition-all shadow-sm;
   }
 
-  /* כפתור התחברות קטן (Log in) */
   .btn-nav-light {
     @apply bg-white text-gray-800 px-6 py-2 rounded-full font-bold text-sm hover:bg-gray-100 transition shadow-sm border border-gray-100;
   }
-  
-  /* כפתור צור קשר כהה בתפריט */
+ 
   .btn-nav-dark {
     @apply bg-[#B08D55] text-white px-6 py-2 rounded-full font-bold text-sm hover:bg-[#967642] transition shadow-sm;
   }
 
-  /* רקע הבז' העליון */
   .bg-beige-hero {
     background-color: #F3EFE0;
-    /* הוספת קווים עדינים ברקע כמו בתמונה */
+
     background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.3) 10px, rgba(255,255,255,0.3) 11px);
   }
 
-  /* הכרטיסיות הלבנות */
   .feature-card {
     @apply bg-white p-8 rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.05)] border border-gray-50 flex flex-col items-center text-center hover:-translate-y-1 transition duration-300;
   }
 
 
+
+.toast-gold {
+  @apply !bg-[#1a1a1a] !text-white !border !border-[#B08D55];
+  @apply !rounded-[50px] !px-6 !py-3 !text-sm !font-medium;
+  @apply !shadow-xl !mt-5 !max-w-[400px] !min-w-[200px] !text-center;
+  @apply !mx-auto !justify-center; 
+
+.hot-toast-bar-base {
+  @apply !duration-300; 
+}
+
+
+}
+
+* {
+
+    scrollbar-width: none; 
+    
+
+    -ms-overflow-style: none;  
+}
+
+
+*::-webkit-scrollbar {
+    display: none;
+}
 }

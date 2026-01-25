@@ -53,3 +53,18 @@ def delete_sub_category(sub_id: int, db: Session = Depends(get_db)):
     db.delete(db_sub)
     db.commit()
     return {"message": "SubCategory deleted"}
+
+@router.put("/sub-categories/{sub_id}", response_model=SubCategory)
+def update_sub_category(sub_id: int, sub_category: SubCategoryBase, db: Session = Depends(get_db)):
+    
+    db_sub = db.query(models.SubCategory).filter(models.SubCategory.id == sub_id).first()
+    
+
+    if not db_sub:
+        raise HTTPException(status_code=404, detail="SubCategory not found")
+
+    db_sub.name = sub_category.name
+    db.commit()
+    db.refresh(db_sub)
+    
+    return db_sub
