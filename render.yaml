@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: genlearn-backend
+    rootDir: backend
+    env: python
+    buildCommand: pip install -r requirements.txt && alembic upgrade head
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: genlearn-db
+          property: connectionString
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALGORITHM
+        value: HS256
+      - key: ADMIN_PHONE
+        value: "0501234567"
+      - key: PROJECT_NAME
+        value: "GenLearn AI Learning Platform"
+
+databases:
+  - name: genlearn-db
+    databaseName: genlearn
+    user: genlearn
+    plan: free
