@@ -3,10 +3,10 @@
   "name": "genlearn-frontend",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "dist/frontend/browser",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
