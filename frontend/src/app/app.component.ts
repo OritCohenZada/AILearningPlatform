@@ -7,7 +7,7 @@ import { ToastService } from './services/toast.service';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, CommonModule], 
-  templateUrl: './app.html', 
+  templateUrl: './app.component.html', 
 })
 export class AppComponent {
   toastService = inject(ToastService);
