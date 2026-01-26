@@ -60,7 +60,7 @@ export class AdminDashboardComponent implements OnInit {
   }
 
   currentSkip: number = 0; 
-  limit: number = 5;
+  limit: number = 5;  // חזרתי ל-5
 
   ngOnInit(): void {
     this.loadUsers();
@@ -69,18 +69,16 @@ export class AdminDashboardComponent implements OnInit {
 
 loadUsers(): void {
     this.apiService.getUsers(this.currentSkip, this.limit).subscribe(data => {
-      this.users = data.filter(user => user.role !== 'admin');
+      this.users = data; // בלי סינון - הבקאנד כבר סינן
     });
   }
   nextPage(): void {
-    if (this.users.length === this.limit) {
-      this.currentSkip += this.limit;
-      this.loadUsers();
-    }
+    this.currentSkip += this.limit;
+    this.loadUsers();
   }
 
   prevPage(): void {
-    if (this.currentSkip > 0) {
+    if (this.currentSkip >= this.limit) {
       this.currentSkip -= this.limit;
       this.loadUsers();
     }

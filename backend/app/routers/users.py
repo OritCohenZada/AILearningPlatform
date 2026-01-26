@@ -30,6 +30,8 @@ class Token(BaseModel):
     user_role: str
 
 
+from ..core.config import settings
+
 @router.post("/signup", response_model=User)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
 
@@ -37,8 +39,8 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
     if existing_user:
         raise HTTPException(status_code=400, detail="Phone already registered")
 
-
-    role = "admin" if "admin" in user.name.lower() else "user"
+    # בדיקה אם זה מנהל לפי מספר טלפון
+    role = "admin" if user.phone == settings.admin_phone else "user"
 
     new_user = models.User(name=user.name, phone=user.phone, role=role)
     db.add(new_user)
@@ -74,7 +76,8 @@ def read_users_me(current_user: models.User = Depends(auth.get_current_user)):
 
 @router.get("/", response_model=List[User])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = db.query(models.User).offset(skip).limit(limit).all()
+    # סינון רק משתמשים עם role="user" ישירות ב-SQL
+    users = db.query(models.User).filter(models.User.role == "user").offset(skip).limit(limit).all()
     return users
 
 

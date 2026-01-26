@@ -2,7 +2,8 @@
   <router-outlet></router-outlet>
 
   @if (toastService.toastState().show) {
-  <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[9999] px-12 py-4 rounded-full shadow-2xl animate-fade-in-down bg-[#1a1a1a] border border-[#B08D55] text-white min-w-[300px] text-center shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
+  <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[9999] px-12 py-4 rounded-full shadow-2xl animate-fade-in-down bg-white min-w-[300px] text-center shadow-[0_10px_20px_rgba(0,0,0,0.5)] border-r-4"
+       [class]="toastService.toastState().type === 'success' ? 'border-r-emerald-500 text-emerald-700' : 'border-r-red-500 text-red-700'">
     
     <span class="font-medium text-base tracking-wide font-serif-display">
       {{ toastService.toastState().message }}

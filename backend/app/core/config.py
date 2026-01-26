@@ -12,6 +12,7 @@ class Settings(BaseSettings):
     mail_username: str
     mail_password: str
     admin_email: str
+    admin_phone: str 
     mail_server: str
     mail_port: int
 

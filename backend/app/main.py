@@ -28,3 +28,7 @@ app.include_router(contact.router)
 @app.get("/")
 def read_root():
     return {"message": "Welcome to AI Learning Platform API"}
+
+@app.get("/health")
+def health_check():
+    return {"status": "healthy", "service": "GenLearn API"}

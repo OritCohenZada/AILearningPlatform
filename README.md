@@ -111,6 +111,11 @@ backend/
 - הרשאות מבוססות תפקידים (משתמש רגיל/מנהל)
 - אבטחה מבוססת JWT tokens
 
+**הגדרת תפקידים:**
+- **משתמש רגיל**: כל משתמש שנרשם רגיל מקבל תפקיד "user"
+- **מנהל**: משתמש עם מספר טלפון המוגדר ב-ADMIN_PHONE מקבל תפקיד "admin" אוטומטית
+- **הגדרה**: הגדר ADMIN_PHONE=0501234567 בקובץ .env
+
 ### לוח בקרה למשתמש
 - בחירת קטגוריות ותת-קטגוריות למידה
 - שליחת שאלות לבינה המלאכותית
@@ -194,6 +199,7 @@ DATABASE_URL=postgresql://user:password@localhost/dbname
 OPENAI_API_KEY=your_openai_api_key
 SECRET_KEY=your_secret_key
 PROJECT_NAME=GenLearn AI Learning Platform
+ADMIN_PHONE=0501234567
 ```
 
 ---
@@ -206,6 +212,53 @@ PROJECT_NAME=GenLearn AI Learning Platform
 - הגנה מפני SQL injection באמצעות SQLAlchemy
 - שמירת נתונים רגישים במשתני סביבה
 
+---
+
+## בדיקות (Testing)
+
+### Backend Tests (Pytest)
+```bash
+cd backend
+pip install -r requirements.txt
+python -m pytest tests/ -v
+# או הרצת הסקריפט המוכן:
+run-tests.bat
+```
+
+**כיסוי בדיקות:**
+- בדיקות יחידה לשירותי AI ומודלי נתונים
+- בדיקות אינטגרציה לנתיבי API
+- בדיקות אבטחה ואימות
+- בדיקות טיפול בשגיאות
+- **11 בדיקות עוברות** במערכת הבדיקות
+
+### Frontend Tests (Vitest)
+```bash
+cd frontend
+npm test
+```
+
+**כיסוי בדיקות:**
+- בדיקות יחידה לרכיבים ושירותים
+- בדיקות אינטגרציה לזרימות משתמש
+- בדיקות ממשק משתמש
+- Mock testing לשירותי API
+
+**הערה**: בפרויקט זה התמקדנו בבדיקות Backend בלבד
+
+### מבנה קבצי בדיקות
+```
+backend/tests/
+├── test_main.py           # בדיקות API בסיסיות
+├── test_ai_service.py     # בדיקות שירות AI
+├── test_user_model.py     # בדיקות מודל משתמש
+└── test_integration.py    # בדיקות אינטגרציה
+
+run-tests.bat              # סקריפט להרצת כל הבדיקות
+```
+
+---
+
 ## פיתוח
 
 ### איכות קוד
@@ -213,9 +266,37 @@ PROJECT_NAME=GenLearn AI Learning Platform
 - הגדרות ESLint לבדיקת קוד
 - עיצוב קוד אחיד עם Prettier
 - ארכיטקטורה מבוססת רכיבים
+- מערכת בדיקות מלאה (Unit + Integration)
 
 ### ביצועים
 - טעינה עצלה של דפים
 - אופטימיזציה של גודל הקבצים
 - שימוש באסטרטגיות caching
 - זיהוי שינויים מותאם
+
+---
+
+## דפלוימנט (Deployment)
+
+### Frontend
+- **Vercel** (מומלץ) - דפלוימנט אוטומטי מ-Git
+- **Netlify** - חינמי עם SSL
+- **GitHub Pages** - לפרויקטים סטטיים
+
+### Backend
+- **Railway** (מומלץ) - דפלוימנט Python קל
+- **Render** - חינמי עם PostgreSQL
+- **Heroku** - פלטפורמה מבוססת
+
+### Database
+- **Railway PostgreSQL** - מסד נתונים מנוהל
+- **Supabase** - PostgreSQL חינמי
+- **ElephantSQL** - PostgreSQL בענן
+
+### הוראות מלאות
+ראה קובץ [DEPLOYMENT.md](DEPLOYMENT.md) להוראות דפלוימנט מפורטות.
+
+**Demo URLs:**
+- Frontend: `https://genlearn.vercel.app`
+- Backend API: `https://genlearn-api.railway.app`
+- API Documentation: `https://genlearn-api.railway.app/docs`

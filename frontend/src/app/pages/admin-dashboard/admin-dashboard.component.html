@@ -97,7 +97,7 @@
             <div class="flex justify-between items-center">
               <button (click)="prevPage()" [disabled]="currentSkip === 0" class="text-[10px] px-3 py-1.5 bg-white border rounded hover:border-black disabled:opacity-50">← Prev</button>
               <span class="text-[10px] text-gray-400">Page {{ (currentSkip / limit) + 1 }}</span>
-              <button (click)="nextPage()" [disabled]="users.length < limit" class="text-[10px] px-3 py-1.5 bg-white border rounded hover:border-black disabled:opacity-50">Next →</button>
+              <button (click)="nextPage()" class="text-[10px] px-3 py-1.5 bg-white border rounded hover:border-black">Next →</button>
             </div>
          </div>
       </div>
