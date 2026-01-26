@@ -1,5 +1,3 @@
-
-
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
@@ -36,7 +34,6 @@ def create_learning_session(prompt_req: PromptCreate, db: Session = Depends(get_
     """
 
     try:
-
         response = client.chat.completions.create(
             model="gpt-4o",
             messages=[
@@ -48,9 +45,21 @@ def create_learning_session(prompt_req: PromptCreate, db: Session = Depends(get_
         )
         
         ai_answer = response.choices[0].message.content
+        
+        if not ai_answer or ai_answer.strip() == "":
+            raise HTTPException(status_code=500, detail="AI returned empty response")
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error communicating with AI: {str(e)}")
+        error_msg = str(e).lower()
+        
+        if "api key" in error_msg or "unauthorized" in error_msg:
+            raise HTTPException(status_code=500, detail="AI service configuration error")
+        elif "quota" in error_msg or "rate limit" in error_msg:
+            raise HTTPException(status_code=500, detail="AI service temporarily unavailable due to high demand")
+        elif "network" in error_msg or "connection" in error_msg:
+            raise HTTPException(status_code=500, detail="Network connection error. Please try again")
+        else:
+            raise HTTPException(status_code=500, detail="AI service error. Please try again later")
 
 
     new_prompt = models.Prompt(

@@ -25,13 +25,17 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       name: ['', Validators.required],
-      phone: ['', Validators.required]
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]]
     });
   }
 
   onSubmit(): void {
     if (this.loginForm.invalid) {
-      this.toast.error('Please fill in all required fields'); 
+      if (this.loginForm.get('phone')?.hasError('pattern')) {
+        this.toast.error('Phone number must be exactly 10 digits');
+      } else {
+        this.toast.error('Please fill in all required fields');
+      }
       return;
     }
 

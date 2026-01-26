@@ -25,14 +25,14 @@ export class AdminDashboardComponent implements OnInit {
 
   categories: Category[] = [];
   
-  // --- Modals State ---
+
   showUserModal: boolean = false;
   showCategoryModal: boolean = false;
   
-  // משתנים חדשים לתיבת המחיקה המעוצבת
+ 
   showDeleteModal: boolean = false;
   deleteType: 'user' | 'category' | 'sub-category' | null = null;
-  itemToDelete: any = null; // נשמור פה את האובייקט או ה-ID למחיקה
+  itemToDelete: any = null; 
 
   isEditing: boolean = false;
   editingUserId: number | null = null;
@@ -69,7 +69,7 @@ export class AdminDashboardComponent implements OnInit {
 
 loadUsers(): void {
     this.apiService.getUsers(this.currentSkip, this.limit).subscribe(data => {
-      this.users = data.filter(user => user.name !== 'Admin');
+      this.users = data.filter(user => user.role !== 'admin');
     });
   }
   nextPage(): void {
@@ -135,6 +135,10 @@ loadUsers(): void {
         this.loadUsers();
         this.closeModal();
       },
+      error: (err) => {
+        console.error(err);
+        this.toast.error(this.isEditing ? 'Failed to update user' : 'Failed to create user');
+      }
     });
   }
 
@@ -169,21 +173,37 @@ loadUsers(): void {
           this.loadUsers();
           if (this.selectedUser?.id === user.id) this.selectedUser = null;
           this.closeDeleteModal();
+        },
+        error: (err) => {
+          console.error(err);
+          this.toast.error('Failed to delete user');
         }
       });
     } 
     else if (this.deleteType === 'category') {
-      this.apiService.deleteCategory(this.itemToDelete).subscribe(() => {
-        this.toast.success('Category deleted');
-        this.loadCategories();
-        this.closeDeleteModal();
+      this.apiService.deleteCategory(this.itemToDelete).subscribe({
+        next: () => {
+          this.toast.success('Category deleted');
+          this.loadCategories();
+          this.closeDeleteModal();
+        },
+        error: (err) => {
+          console.error(err);
+          this.toast.error('Failed to delete category');
+        }
       });
     } 
     else if (this.deleteType === 'sub-category') {
-      this.apiService.deleteSubCategory(this.itemToDelete).subscribe(() => {
-        this.toast.success('Sub-category deleted');
-        this.loadCategories();
-        this.closeDeleteModal();
+      this.apiService.deleteSubCategory(this.itemToDelete).subscribe({
+        next: () => {
+          this.toast.success('Sub-category deleted');
+          this.loadCategories();
+          this.closeDeleteModal();
+        },
+        error: (err) => {
+          console.error(err);
+          this.toast.error('Failed to delete sub-category');
+        }
       });
     }
   }
@@ -245,6 +265,21 @@ loadUsers(): void {
     this.contentForm.reset();   
   }
 
+  getCategoryName(categoryId: number): string {
+    const category = this.categories.find(c => c.id === categoryId);
+    return category ? category.name : 'Unknown Category';
+  }
+
+  getSubCategoryName(subCategoryId: number): string {
+    for (const category of this.categories) {
+      const subCategory = category.sub_categories?.find(sub => sub.id === subCategoryId);
+      if (subCategory) {
+        return subCategory.name;
+      }
+    }
+    return 'Unknown Sub-Category';
+  }
+
 saveContent(): void {
 
     if (this.contentForm.invalid) return;
@@ -277,7 +312,9 @@ saveContent(): void {
       },
       error: (err) => {
         console.error(err);
-        this.toast.error('Error saving content.');
+        const action = this.isEditing ? 'update' : 'create';
+        const type = this.modalType === 'category' ? 'category' : 'sub-category';
+        this.toast.error(`Failed to ${action} ${type}`);
       }
     });
   }
