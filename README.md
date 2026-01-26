@@ -181,7 +181,6 @@ Prompts
 cd backend
 pip install -r requirements.txt
 cp .env.example .env
-# ערוך את קובץ .env עם הפרטים שלך
 alembic upgrade head
 uvicorn app.main:app --reload
 ```
