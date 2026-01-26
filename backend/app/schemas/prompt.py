@@ -5,7 +5,7 @@ from typing import Optional
 
 class PromptCreate(BaseModel):
     user_id: int
-    category_id: int
+    category_id: Optional[int] = None
     sub_category_id: int
     prompt: str
 

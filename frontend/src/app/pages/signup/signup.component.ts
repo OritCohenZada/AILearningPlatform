@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component,inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { ApiService } from '../services/api.service'; // ודאי שהנתיב נכון
+import { ApiService } from '../../services/api.service';
+import { ToastService } from '../../services/toast.service'; 
 
 @Component({
   selector: 'app-signup',
@@ -13,43 +14,49 @@ import { ApiService } from '../services/api.service'; // ודאי שהנתיב �
 export class SignupComponent {
   signupForm: FormGroup;
   isLoading: boolean = false;
-  errorMessage: string = '';
+
+
+  private toast = inject(ToastService);
+  private apiService=inject(ApiService)
 
   constructor(
     private fb: FormBuilder,
-    private apiService: ApiService,
-    private router: Router
+    private router: Router,
+
   ) {
     this.signupForm = this.fb.group({
       name: ['', Validators.required],
-      phone: ['', Validators.required]
+      phone: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]]
     });
   }
 
   onSignup(): void {
-    if (this.signupForm.invalid) return;
+    if (this.signupForm.invalid) {
+      if (this.signupForm.get('phone')?.hasError('pattern')) {
+        this.toast.error('Phone number must be exactly 10 digits');
+      } else {
+        this.toast.error('Please fill in all required fields');
+      }
+      return;
+    }
 
     this.isLoading = true;
-    this.errorMessage = '';
     const { name, phone } = this.signupForm.value;
 
-    // 1. שלב ראשון: יצירת המשתמש
+
     this.apiService.createUser(name, phone).subscribe({
       next: () => {
         
-        // 2. שלב שני: כניסה אוטומטית (כדי לקבל את הטוקן!)
-        console.log("הרשמה הצליחה, מבצע כניסה אוטומטית...");
-        
+
         this.apiService.login(name, phone).subscribe({
           next: () => {
-            // 3. שלב שלישי: ניווט לדף המשתמש
-            console.log("כניסה אוטומטית הצליחה!");
+
+            this.toast.success('Account created successfully! Welcome.');
             this.router.navigate(['/user']);
           },
           error: (loginErr) => {
-            console.error("הרשמה הצליחה אבל כניסה נכשלה", loginErr);
-            this.isLoading = false;
-            // במקרה נדיר זה, נעביר אותו ללוגין ידני
+    
+            this.toast.success('Account created. Please log in.');
             this.router.navigate(['/login']);
           }
         });
@@ -58,10 +65,11 @@ export class SignupComponent {
       error: (err) => {
         console.error(err);
         this.isLoading = false;
+      
         if (err.status === 400) {
-           this.errorMessage = 'הטלפון הזה כבר רשום במערכת.';
+           this.toast.error('Phone number already registered');
         } else {
-           this.errorMessage = 'שגיאה ביצירת משתמש. נסה שוב.';
+           this.toast.error('Signup failed. Please try again later.');
         }
       }
     });

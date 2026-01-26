@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from pydantic import BaseModel
-from .. import models, database, auth  # הוספנו את auth
+from .. import models, database, auth  
 
 router = APIRouter(prefix="/users", tags=["users"])
 get_db = database.get_db
@@ -84,6 +84,10 @@ def delete_user(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(auth.get_current_admin)
 ):
+    # מניעת מחיקה עצמית של מנהל
+    if current_user.id == user_id:
+        raise HTTPException(status_code=400, detail="Cannot delete your own account")
+    
     user = db.query(models.User).filter(models.User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")

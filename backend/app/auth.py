@@ -5,11 +5,11 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from . import database, models
+from .core.config import settings
 
-# הגדרות סודיות (בפרודקשן שמים את זה במשתני סביבה)
-SECRET_KEY = "my_super_secret_key_change_me_please" 
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # טוקן תקף ל-24 שעות
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES  
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/login")
 

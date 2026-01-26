@@ -1,19 +1,13 @@
-<div class="min-h-screen bg-white text-white font-sans dir-rtl">
+<div class="font-sans dir-rtl text-[#1a1a1a]">
+  <router-outlet></router-outlet>
 
-  <nav class="bg-neutral-900 p-4 border-b border-amber-500 shadow-lg shadow-amber-500/20">
-    <div class="container mx-auto flex justify-between items-center">
-      
-      <h1 class="text-2xl font-bold text-amber-500 tracking-wider flex items-center gap-2">
-        🎓 AI Learning
-      </h1>
-
-   
-
-    </div>
-  </nav>
-
-  <div class="container mx-auto p-6">
-    <router-outlet></router-outlet>
+  @if (toastService.toastState().show) {
+  <div class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[9999] px-12 py-4 rounded-full shadow-2xl animate-fade-in-down bg-[#1a1a1a] border border-[#B08D55] text-white min-w-[300px] text-center shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
+    
+    <span class="font-medium text-base tracking-wide font-serif-display">
+      {{ toastService.toastState().message }}
+    </span>
+    
   </div>
-
+}
 </div>

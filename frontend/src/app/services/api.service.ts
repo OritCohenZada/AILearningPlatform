@@ -87,12 +87,18 @@ export class ApiService {
     return this.http.post<SubCategory>(`${this.baseUrl}/categories/${categoryId}/sub-categories`, { name });
   }
 
+
   deleteCategory(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/categories/${id}`);
   }
 
   updateCategory(id: number, name: string): Observable<Category> {
     return this.http.put<Category>(`${this.baseUrl}/categories/${id}`, { name });
+  }
+
+
+  updateSubCategory(id: number, name: string): Observable<any> {
+    return this.http.put(`${this.baseUrl}/categories/sub-categories/${id}`, { name });
   }
 
   deleteSubCategory(subId: number): Observable<any> {
@@ -106,5 +112,9 @@ export class ApiService {
 
   getUserHistory(userId: number): Observable<Prompt[]> {
     return this.http.get<Prompt[]>(`${this.baseUrl}/prompts/user/${userId}`);
+  }
+
+  sendContactMessage(name: string, email: string, message: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/contact`, { name, email, message });
   }
 }
