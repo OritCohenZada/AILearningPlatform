@@ -1,22 +1,12 @@
 {
   "version": 2,
   "name": "genlearn-frontend",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist/frontend"
-      }
-    }
-  ],
+  "buildCommand": "npm run build:vercel",
+  "outputDirectory": "dist/frontend/browser",
   "routes": [
     {
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
