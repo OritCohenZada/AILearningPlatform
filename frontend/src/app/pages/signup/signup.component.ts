@@ -50,9 +50,13 @@ export class SignupComponent {
 
         this.apiService.login(name, phone).subscribe({
           next: () => {
-
             this.toast.success('Account created successfully! Welcome.');
-            this.router.navigate(['/user']);
+            
+            if (this.apiService.isAdmin()) {
+              this.router.navigate(['/admin']);
+            } else {
+              this.router.navigate(['/user']);
+            }
           },
           error: (loginErr) => {
     
