@@ -224,12 +224,7 @@ python -m pytest tests/ -v
 run-tests.bat
 ```
 
-**כיסוי בדיקות:**
-- בדיקות יחידה לשירותי AI ומודלי נתונים
-- בדיקות אינטגרציה לנתיבי API
-- בדיקות אבטחה ואימות
-- בדיקות טיפול בשגיאות
-- **11 בדיקות עוברות** במערכת הבדיקות
+
 
 ### Frontend Tests (Vitest)
 ```bash
@@ -237,13 +232,7 @@ cd frontend
 npm test
 ```
 
-**כיסוי בדיקות:**
-- בדיקות יחידה לרכיבים ושירותים
-- בדיקות אינטגרציה לזרימות משתמש
-- בדיקות ממשק משתמש
-- Mock testing לשירותי API
 
-**הערה**: בפרויקט זה התמקדנו בבדיקות Backend בלבד
 
 ### מבנה קבצי בדיקות
 ```
@@ -256,46 +245,23 @@ backend/tests/
 run-tests.bat              # סקריפט להרצת כל הבדיקות
 ```
 
----
 
-## פיתוח
-
-### איכות קוד
-- שימוש ב-TypeScript במצב strict
-- הגדרות ESLint לבדיקת קוד
-- עיצוב קוד אחיד עם Prettier
-- ארכיטקטורה מבוססת רכיבים
-- מערכת בדיקות מלאה (Unit + Integration)
-
-### ביצועים
-- טעינה עצלה של דפים
-- אופטימיזציה של גודל הקבצים
-- שימוש באסטרטגיות caching
-- זיהוי שינויים מותאם
-
----
 
 ## דפלוימנט (Deployment)
 
 ### Frontend
-- **Vercel** (מומלץ) - דפלוימנט אוטומטי מ-Git
-- **Netlify** - חינמי עם SSL
-- **GitHub Pages** - לפרויקטים סטטיים
+- **Vercel** 
+
 
 ### Backend
-- **Railway** (מומלץ) - דפלוימנט Python קל
-- **Render** - חינמי עם PostgreSQL
-- **Heroku** - פלטפורמה מבוססת
+- **Render** 
+
 
 ### Database
-- **Railway PostgreSQL** - מסד נתונים מנוהל
-- **Supabase** - PostgreSQL חינמי
-- **ElephantSQL** - PostgreSQL בענן
+- **Render PostgreSQL** 
 
-### הוראות מלאות
-ראה קובץ [DEPLOYMENT.md](DEPLOYMENT.md) להוראות דפלוימנט מפורטות.
+.
 
-**Demo URLs:**
-- Frontend: `https://genlearn.vercel.app`
-- Backend API: `https://genlearn-api.railway.app`
-- API Documentation: `https://genlearn-api.railway.app/docs`
+**Demo URL:**
+- **Frontend**:`https://genlearn-frontend.vercel.app`(האפליקציה המלאה)
+- **Backend API**: `http://127.0.0.1:8000/docs` (תיעוד API)
